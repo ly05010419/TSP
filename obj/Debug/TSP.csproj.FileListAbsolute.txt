@@ -1,0 +1,7 @@
+C:\Users\yongli\source\repos\TSP\TSP\bin\Debug\TSP.exe.config
+C:\Users\yongli\source\repos\TSP\TSP\bin\Debug\TSP.exe
+C:\Users\yongli\source\repos\TSP\TSP\bin\Debug\TSP.pdb
+C:\Users\yongli\source\repos\TSP\TSP\obj\Debug\TSP.csprojResolveAssemblyReference.cache
+C:\Users\yongli\source\repos\TSP\TSP\obj\Debug\TSP.csproj.CoreCompileInputs.cache
+C:\Users\yongli\source\repos\TSP\TSP\obj\Debug\TSP.exe
+C:\Users\yongli\source\repos\TSP\TSP\obj\Debug\TSP.pdb
