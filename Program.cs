@@ -9,10 +9,10 @@ namespace PrimKruskal
         static void Main(string[] args)
         {
             Algorithmus algorithmus = new Algorithmus();
-            algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10_1.txt", "Neighbor");
+            //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10_1.txt", "Neighbor");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10_1.txt", "DoubleTree");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10_1.txt", "bruteforce");
-            //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10_1.txt", "bruteforce");
+            //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10_1.txt", "branchUndBound");
 
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10.txt","Neighbor");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10.txt", "DoubleTree");
@@ -27,10 +27,10 @@ namespace PrimKruskal
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "Neighbor");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "DoubleTree");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "bruteforce");
-            //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "branchUndBound");
+            algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "branchUndBound");
 
             // algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12e.txt", "Neighbor");
-            // algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12e.txt", "DoubleTree");
+             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12e.txt", "DoubleTree");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12e.txt", "bruteforce");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12e.txt", "branchUndBound");
 

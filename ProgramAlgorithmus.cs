@@ -10,7 +10,9 @@ namespace namespaceAlgorithmus
     {
 
         double minResultFromBruteforce = Double.MaxValue;
-      
+        double resultFromBruteforce = 0;
+        int mal = 0;
+
         public void zeitOfAlgorithmus(string path, String methode)
         {
             Console.WriteLine(methode);
@@ -23,7 +25,7 @@ namespace namespaceAlgorithmus
 
             if (methode == "Neighbor")
             {
-                algorithmus.nearestNeighbor(graph);
+                algorithmus.bestResultFormNearestNeighbor(graph);
             }
             else if (methode == "DoubleTree")
             {
@@ -43,180 +45,7 @@ namespace namespaceAlgorithmus
             Console.WriteLine("\n\n{0}s", ts.TotalSeconds);
         }
 
-
-        public void bruteforce(Graph graph) {
-
-            List<Node> eulerTour = new List<Node>();
-            bruteforceAlgorithmus(graph.nodeList[0], eulerTour, graph);
-            Console.WriteLine("min weight : " + Math.Round(minResultFromBruteforce, 2));
-        }
-
-        public void bruteforceAlgorithmus(Node startNode, List<Node> eulerTour, Graph graph)
-        {
-            startNode.visited = true;
-            eulerTour.Add(startNode);
-
-            foreach (Node node in startNode.nodeList) {
-                if (!node.visited)
-                {
-                    bruteforceAlgorithmus(node, eulerTour, graph);
-                }
-            }
-
-            if (eulerTour.Count== graph.nodeList.Count) {
-               // Console.WriteLine(string.Join(",", eulerTour));
-                double result = lengthFromEulerTour(eulerTour, graph);
-                if (result< minResultFromBruteforce) {
-                    minResultFromBruteforce = result;
-                }
-
-                //Console.WriteLine(" weight : "+ Math.Round(result,2));
-            }
-
-            startNode.visited = false;
-            eulerTour.Remove(startNode);
-
-        }
-
-
-        public void branchUndBound(Graph graph)
-        {
-
-            List<Node> eulerTour = new List<Node>();
-            branchUndBoundAlgorithmus(graph.nodeList[0], eulerTour, graph);
-            Console.WriteLine("min weight : " + Math.Round(minResultFromBruteforce, 2));
-        }
-
-        public void branchUndBoundAlgorithmus(Node startNode, List<Node> eulerTour, Graph graph)
-        {
-            double result = lengthFromEulerTour(eulerTour, graph);
-            if (result > minResultFromBruteforce)
-            {
-                return;
-            }
-
-            startNode.visited = true;
-            eulerTour.Add(startNode);
-
-            foreach (Node node in startNode.nodeList)
-            {
-                if (!node.visited)
-                {
-                    branchUndBoundAlgorithmus(node, eulerTour, graph);
-                }
-            }
-
-            if (eulerTour.Count == graph.nodeList.Count)
-            {
-                // Console.WriteLine(string.Join(",", eulerTour));
-                result = lengthFromEulerTour(eulerTour, graph);
-                if (result < minResultFromBruteforce)
-                {
-                    minResultFromBruteforce = result;
-                }
-
-                //Console.WriteLine(" weight : "+ Math.Round(result,2));
-            }
-
-            startNode.visited = false;
-            eulerTour.Remove(startNode);
-
-        }
-
-
-
-        public void DFS(Node node, List<Node> result)
-        {
-            result.Add(node);
-
-            node.visited = true;
-
-            foreach (Node n in node.nodeList)
-            {
-                if (!n.visited)
-                {
-                    DFS(n, result);
-                }
-            }
-        }
-
-
-        public MST kruskal(Graph graph)
-        {
-            List<Edge> edges = new List<Edge>();
-
-            graph.edgeList.Sort();
-
-            UnionFind uf = new UnionFind();
-
-            uf.MakeSet(graph.nodeList.Count);
-
-            foreach (Edge edge in graph.edgeList)
-            {
-                if (uf.Union(edge.startNode.id, edge.endNode.id))
-                {
-                    edges.Add(edge);
-                }
-            }
-            return new MST(edges,graph.nodeList.Count);
-        }
-
-
-        public void DoubleTree(Graph graph)
-        {
-
-            MST mst = kruskal(graph);
-
-            double min = Double.MaxValue;
-
-            foreach (Node node in mst.nodeList) {
-
-                List<Node> eulerTour = new List<Node>();
-                DFS(node, eulerTour);
-
-                double result = lengthFromEulerTour(eulerTour, graph);
-
-                Console.Write(string.Join(",", eulerTour));
-                Console.WriteLine(" weight :" + Math.Round(result, 2));
-
-                if (result< min) {
-                    min = result;
-                }
-
-                mst.reset();
-            }
-
-            Console.WriteLine("minimal:" + Math.Round(min, 2));
-
-
-        }
-
-        public double lengthFromEulerTour(List<Node> nodes, Graph graph) {
-
-            double sum = 0;
-
-            if (nodes.Count > 1)
-            {
-                Node startNode = nodes[nodes.Count - 1];
-
-                for (int i = 0; i < nodes.Count; i++)
-                {
-
-                    Edge e = graph.findEdge(startNode, nodes[i]);
-                    sum = sum + e.weight;
-
-                    startNode = nodes[i];
-                }
-            }
-            
-           
-
-            return sum;
-
-        }
-
-
-        public void nearestNeighbor(Graph graph)
+        public double bestResultFormNearestNeighbor(Graph graph)
         {
             double minResult = Double.MaxValue;
 
@@ -225,16 +54,17 @@ namespace namespaceAlgorithmus
                 graph.reset();
 
                 double result = neighborAlgorithmus(node, graph);
-                
+
                 Console.WriteLine(" weight :" + Math.Round(result, 2));
 
-                if (result < minResult) {
+                if (result < minResult)
+                {
                     minResult = result;
                 }
             }
 
-            Console.WriteLine("minimal:"+Math.Round(minResult,2));
-            
+            Console.WriteLine("minimal:" + Math.Round(minResult, 2));
+            return minResult;
         }
 
 
@@ -247,10 +77,10 @@ namespace namespaceAlgorithmus
 
             Console.Write(startNode.id + " ");
 
-            while ((minEdge = nextMinEdge(startNode)) != null)
+            while ((minEdge = findMinEdge(startNode)) != null)
             {
                 startNode = minEdge.endNode;
-                Console.Write(startNode.id+" ");
+                Console.Write(startNode.id + " ");
                 result = result + minEdge.weight;
             }
 
@@ -260,7 +90,8 @@ namespace namespaceAlgorithmus
             return result;
         }
 
-        public Edge nextMinEdge(Node startNode) {
+        public Edge findMinEdge(Node startNode)
+        {
 
             startNode.visited = true;
 
@@ -279,9 +110,189 @@ namespace namespaceAlgorithmus
 
                 return minedges[0];
             }
-            else {
+            else
+            {
                 return null;
             }
         }
+
+
+        public void DoubleTree(Graph graph)
+        {
+            MST mst = kruskal(graph);
+
+            double min = Double.MaxValue;
+
+            foreach (Node node in mst.nodeList)
+            {
+                List<Node> minTour = new List<Node>();
+                DFS(node, minTour);
+
+                double result = weightFromTour(minTour, graph);
+
+                Console.Write(string.Join(",", minTour));
+                Console.WriteLine(" weight :" + Math.Round(result, 2));
+
+                if (result < min)
+                {
+                    min = result;
+                }
+
+                mst.reset();
+            }
+
+            Console.WriteLine("minimal:" + Math.Round(min, 2));
+        }
+
+        public void DFS(Node node, List<Node> result)
+        {
+            result.Add(node);
+
+            node.visited = true;
+
+            foreach (Node n in node.nodeList)
+            {
+                if (!n.visited)
+                {
+                    DFS(n, result);
+                }
+            }
+        }
+
+        public MST kruskal(Graph graph)
+        {
+            List<Edge> edges = new List<Edge>();
+
+            graph.edgeList.Sort();
+
+            UnionFind uf = new UnionFind();
+
+            uf.MakeSet(graph.nodeList.Count);
+
+            foreach (Edge edge in graph.edgeList)
+            {
+                if (uf.Union(edge.startNode.id, edge.endNode.id))
+                {
+                    edges.Add(edge);
+                }
+            }
+            return new MST(edges, graph.nodeList.Count);
+        }
+
+        public double weightFromTour(List<Node> nodes, Graph graph)
+        {
+
+            double sum = 0;
+
+            if (nodes.Count > 1)
+            {
+                Node startNode = nodes[nodes.Count - 1];
+
+                for (int i = 0; i < nodes.Count; i++)
+                {
+
+                    Edge e = graph.findEdge(startNode, nodes[i]);
+                    sum = sum + e.weight;
+
+                    startNode = nodes[i];
+                }
+            }
+            return sum;
+        }
+
+
+        public void bruteforce(Graph graph) {
+
+            List<Node> minTour = new List<Node>();
+            bruteforceAlgorithmus(graph.nodeList[0], minTour, graph);
+            Console.WriteLine("min weight : " + Math.Round(minResultFromBruteforce, 2));
+        }
+
+        public void bruteforceAlgorithmus(Node startNode, List<Node> minTour, Graph graph)
+        {
+            startNode.visited = true;
+            minTour.Add(startNode);
+
+            foreach (Node node in startNode.nodeList)
+            {
+                if (!node.visited)
+                {
+                    Edge e = graph.findEdge(startNode, node);
+                    resultFromBruteforce = resultFromBruteforce + e.weight;
+
+                    branchUndBoundAlgorithmus(node, minTour, graph);
+
+                    resultFromBruteforce = resultFromBruteforce - e.weight;
+                }
+            }
+
+            if (minTour.Count == graph.nodeList.Count)
+            {
+                Edge e = graph.findEdge(minTour[0], minTour[minTour.Count - 1]);
+                resultFromBruteforce = resultFromBruteforce + e.weight;
+
+                if (resultFromBruteforce < minResultFromBruteforce)
+                {
+                    minResultFromBruteforce = resultFromBruteforce;
+                }
+                resultFromBruteforce = resultFromBruteforce - e.weight;
+            }
+
+            startNode.visited = false;
+            minTour.Remove(startNode);
+
+        }
+
+
+        public void branchUndBound(Graph graph)
+        {
+
+            List<Node> minTour = new List<Node>();
+            branchUndBoundAlgorithmus(graph.nodeList[0], minTour, graph);
+            Console.WriteLine("min weight : " + Math.Round(minResultFromBruteforce, 2));
+           
+        }
+
+        public void branchUndBoundAlgorithmus(Node startNode, List<Node> minTour, Graph graph)
+        {
+            if (resultFromBruteforce > minResultFromBruteforce)
+            {
+                return;
+            }
+
+            startNode.visited = true;
+            minTour.Add(startNode);
+
+            foreach (Node node in startNode.nodeList)
+            {
+                if (!node.visited)
+                {
+                    Edge e = graph.findEdge(startNode, node);
+                    resultFromBruteforce = resultFromBruteforce + e.weight;
+
+                    branchUndBoundAlgorithmus(node, minTour, graph);
+
+                    resultFromBruteforce = resultFromBruteforce - e.weight;
+                }
+            }
+
+            if (minTour.Count == graph.nodeList.Count)
+            {
+
+                Edge e = graph.findEdge(minTour[0], minTour[minTour.Count-1]);
+                resultFromBruteforce = resultFromBruteforce + e.weight;
+
+                if (resultFromBruteforce < minResultFromBruteforce)
+                {
+                    minResultFromBruteforce = resultFromBruteforce;
+                }
+                resultFromBruteforce = resultFromBruteforce - e.weight; 
+            }
+
+            startNode.visited = false;
+            minTour.Remove(startNode);
+
+        }
+
     }
 }
