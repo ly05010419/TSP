@@ -58,6 +58,7 @@
     <Content Include="TSP\K_10e.txt" />
     <Content Include="TSP\K_10_1.txt" />
     <Content Include="TSP\K_10_2.txt" />
+    <Content Include="TSP\K_10_3.txt" />
     <Content Include="TSP\K_12.txt" />
     <Content Include="TSP\K_12e.txt" />
     <Content Include="TSP\K_15.txt" />

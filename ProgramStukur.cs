@@ -15,6 +15,8 @@ namespace namespaceStuktur
 
         public List<Edge> edgeList;
 
+        public Dictionary<string,Edge> dictionary = new Dictionary<string, Edge>();
+
         public Graph(List<Node> nodeList, List<Edge> edgeList)
         {
             this.nodeList = nodeList;
@@ -33,18 +35,47 @@ namespace namespaceStuktur
         public Edge findEdge(Node startNode,Node endNode)
         {
             Edge edge = null;
-            foreach (Edge e in edgeList)
+            string key1 = "" + endNode.id + startNode.id;
+
+            string key2 = "" + startNode.id + endNode.id;
+
+
+            if (dictionary.ContainsKey(key1))
             {
-                if (e.endNode.id == endNode.id&& e.startNode.id == startNode.id)
-                {
-                    edge = e;
-                    break;
-                }else if (e.startNode.id == endNode.id && e.endNode.id == startNode.id)
-                {
-                    edge = e;
-                    break;
-                }
+                edge = dictionary[key1];
             }
+            else if (dictionary.ContainsKey(key2))
+            {
+                
+
+                edge = dictionary[key2];
+
+            }
+
+            if (edge!=null) {
+                return edge;
+            }else
+            {
+                foreach (Edge e in edgeList)
+                {
+                    if (e.endNode.id == endNode.id && e.startNode.id == startNode.id)
+                    {
+                        edge = e;
+                        dictionary.Add("" + endNode.id + startNode.id, e);
+                        break;
+                    }
+                    else if (e.startNode.id == endNode.id && e.endNode.id == startNode.id)
+                    {
+                        edge = e;
+                        dictionary.Add("" + startNode.id + startNode.id, e);
+                        break;
+                    }
+                }
+
+
+            }
+
+          
             return edge;
         }
 
