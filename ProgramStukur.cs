@@ -21,6 +21,12 @@ namespace namespaceStuktur
         {
             this.nodeList = nodeList;
             this.edgeList = edgeList;
+
+
+            foreach (Edge e in edgeList) {
+                dictionary.Add( e.endNode.id +"-"+ e.startNode.id, e);
+                dictionary.Add( e.startNode.id +"-"+ e.endNode.id, e);
+            }
         }
 
 
@@ -28,54 +34,13 @@ namespace namespaceStuktur
             foreach (Node d in nodeList) {
                 d.visited = false;
             }
-
         }
 
 
         public Edge findEdge(Node startNode,Node endNode)
         {
-            Edge edge = null;
-            string key1 = "" + endNode.id + startNode.id;
+            Edge edge = dictionary[startNode.id + "-" + endNode.id];
 
-            string key2 = "" + startNode.id + endNode.id;
-
-
-            if (dictionary.ContainsKey(key1))
-            {
-                edge = dictionary[key1];
-            }
-            else if (dictionary.ContainsKey(key2))
-            {
-                
-
-                edge = dictionary[key2];
-
-            }
-
-            if (edge!=null) {
-                return edge;
-            }else
-            {
-                foreach (Edge e in edgeList)
-                {
-                    if (e.endNode.id == endNode.id && e.startNode.id == startNode.id)
-                    {
-                        edge = e;
-                        dictionary.Add("" + endNode.id + startNode.id, e);
-                        break;
-                    }
-                    else if (e.startNode.id == endNode.id && e.endNode.id == startNode.id)
-                    {
-                        edge = e;
-                        dictionary.Add("" + startNode.id + startNode.id, e);
-                        break;
-                    }
-                }
-
-
-            }
-
-          
             return edge;
         }
 
