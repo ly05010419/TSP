@@ -62,11 +62,13 @@ namespace namespaceAlgorithmus
                 {
                     Edge e= graph.findEdge(startNode,node);
                     result = result + e.weight;
+
                     bruteforceAlgorithmus(node, eulerTour, graph);
+
                     result = result - e.weight;
+                    eulerTour.Remove(node);
 
                     node.visited = false;
-                    eulerTour.Remove(node);
                 }
             }
 
@@ -75,12 +77,12 @@ namespace namespaceAlgorithmus
                 double weight = 0;
 
                 Edge e = graph.findEdge(eulerTour[0], eulerTour[eulerTour.Count-1]);
+
                 weight = result + e.weight;
                 if (weight < minResult) {
                     minResult = weight;
                 }
-
-                //Console.WriteLine(" weight : "+ Math.Round(result,2));
+               // Console.WriteLine(" weight : " + weight);
             }
 
             

@@ -15,17 +15,18 @@ namespace namespaceStuktur
 
         public List<Edge> edgeList;
 
-        public Dictionary<string,Edge> dictionary = new Dictionary<string, Edge>();
+        public Edge[,] array;
 
         public Graph(List<Node> nodeList, List<Edge> edgeList)
         {
             this.nodeList = nodeList;
             this.edgeList = edgeList;
 
+            array = new Edge[nodeList.Count, nodeList.Count];
 
             foreach (Edge e in edgeList) {
-                dictionary.Add( e.endNode.id +"-"+ e.startNode.id, e);
-                dictionary.Add( e.startNode.id +"-"+ e.endNode.id, e);
+                array[e.startNode.id,e.endNode.id] = e;
+                array[e.endNode.id,e.startNode.id] = e;
             }
         }
 
@@ -39,8 +40,7 @@ namespace namespaceStuktur
 
         public Edge findEdge(Node startNode,Node endNode)
         {
-            Edge edge = dictionary[startNode.id + "-" + endNode.id];
-
+            Edge edge = array[startNode.id, endNode.id];
             return edge;
         }
 
