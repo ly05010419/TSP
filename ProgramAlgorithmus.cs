@@ -11,6 +11,7 @@ namespace namespaceAlgorithmus
 
         double result = 0;
         double minResult = Double.MaxValue;
+        int level = 0;
 
         public void zeitOfAlgorithmus(string path, String methode)
         {
@@ -47,18 +48,22 @@ namespace namespaceAlgorithmus
 
         public void bruteforce(Graph graph) {
 
-            List<Node> eulerTour = new List<Node>();
+            Node[] eulerTour = new Node[graph.nodeList.Count];
             bruteforceAlgorithmus(graph.nodeList[0], eulerTour, graph);
             Console.WriteLine("min weight : " + Math.Round(minResult, 2));
         }
 
-        public void bruteforceAlgorithmus(Node startNode, List<Node> eulerTour, Graph graph)
+        public void bruteforceAlgorithmus(Node startNode, Node[] eulerTour, Graph graph)
         {
-            startNode.visited = true;
-            eulerTour.Add(startNode);
 
-            foreach (Node node in startNode.nodeList) {
-                if (!node.visited)
+            startNode.visited = true;
+
+            eulerTour[level]=startNode;
+            level++;
+
+            for (int i = 0; i < startNode.nodeList.Count; i++) {
+                Node node = startNode.nodeList[i];
+                if (node.visited==false)
                 {
                     Edge e= graph.findEdge(startNode,node);
                     result = result + e.weight;
@@ -66,17 +71,17 @@ namespace namespaceAlgorithmus
                     bruteforceAlgorithmus(node, eulerTour, graph);
 
                     result = result - e.weight;
-                    eulerTour.Remove(node);
+                   
 
                     node.visited = false;
                 }
             }
 
-            if (eulerTour.Count== graph.nodeList.Count) {
-                // Console.WriteLine(string.Join(",", eulerTour));
+            if (level == graph.nodeList.Count) {
+                
                 double weight = 0;
 
-                Edge e = graph.findEdge(eulerTour[0], eulerTour[eulerTour.Count-1]);
+                Edge e = graph.findEdge(eulerTour[0], eulerTour[level - 1]);
 
                 weight = result + e.weight;
                 if (weight < minResult) {
@@ -85,7 +90,7 @@ namespace namespaceAlgorithmus
                // Console.WriteLine(" weight : " + weight);
             }
 
-            
+            level--;
 
         }
 
@@ -93,50 +98,55 @@ namespace namespaceAlgorithmus
         public void branchUndBound(Graph graph)
         {
 
-            List<Node> eulerTour = new List<Node>();
+            Node[] eulerTour = new Node[graph.nodeList.Count];
             branchUndBoundAlgorithmus(graph.nodeList[0], eulerTour, graph);
             Console.WriteLine("min weight : " + Math.Round(minResult, 2));
         }
 
-        public void branchUndBoundAlgorithmus(Node startNode, List<Node> eulerTour, Graph graph)
+        public void branchUndBoundAlgorithmus(Node startNode, Node[] eulerTour, Graph graph)
         {
-            
+            startNode.visited = true;
             if (result > minResult)
             {
                 return;
             }
+            eulerTour[level] = startNode;
+            level++;
 
-            startNode.visited = true;
-            eulerTour.Add(startNode);
-
-            foreach (Node node in startNode.nodeList)
+            for (int i = 0; i < startNode.nodeList.Count; i++)
             {
-                if (!node.visited)
+                Node node = startNode.nodeList[i];
+                if (node.visited == false)
                 {
                     Edge e = graph.findEdge(startNode, node);
                     result = result + e.weight;
-                    bruteforceAlgorithmus(node, eulerTour, graph);
+
+                    branchUndBoundAlgorithmus(node, eulerTour, graph);
+
                     result = result - e.weight;
 
+
                     node.visited = false;
-                    eulerTour.Remove(node);
                 }
             }
 
-            if (eulerTour.Count == graph.nodeList.Count)
+            if (level == graph.nodeList.Count)
             {
-                // Console.WriteLine(string.Join(",", eulerTour));
+
                 double weight = 0;
 
-                Edge e = graph.findEdge(eulerTour[0], eulerTour[eulerTour.Count - 1]);
+                Edge e = graph.findEdge(eulerTour[0], eulerTour[level - 1]);
+
                 weight = result + e.weight;
                 if (weight < minResult)
                 {
                     minResult = weight;
                 }
-
-                //Console.WriteLine(" weight : "+ Math.Round(result,2));
+                // Console.WriteLine(" weight : " + weight);
             }
+
+            level--;
+
 
         }
 
@@ -204,8 +214,6 @@ namespace namespaceAlgorithmus
             }
 
             Console.WriteLine("minimal:" + Math.Round(min, 2));
-
-
         }
 
         public double lengthFromEulerTour(List<Node> nodes, Graph graph) {
@@ -218,16 +226,12 @@ namespace namespaceAlgorithmus
 
                 for (int i = 0; i < nodes.Count; i++)
                 {
-
                     Edge e = graph.findEdge(startNode, nodes[i]);
                     sum = sum + e.weight;
 
                     startNode = nodes[i];
                 }
             }
-            
-           
-
             return sum;
         }
 
