@@ -16,7 +16,7 @@ namespace PrimKruskal
 
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10.txt","Neighbor");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10.txt", "DoubleTree");
-            algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10.txt", "bruteforce");
+            //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10.txt", "bruteforce");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10.txt", "branchUndBound");
 
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_10e.txt", "Neighbor");
@@ -27,7 +27,7 @@ namespace PrimKruskal
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "Neighbor");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "DoubleTree");
             //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "bruteforce");
-            //algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "branchUndBound");
+            algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12.txt", "branchUndBound");
 
 
             // algorithmus.zeitOfAlgorithmus(@"../../TSP/K_12e.txt", "Neighbor");

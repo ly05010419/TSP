@@ -48,17 +48,16 @@ namespace namespaceAlgorithmus
 
         public void bruteforce(Graph graph) {
 
-            Node[] eulerTour = new Node[graph.nodeList.Count];
-            bruteforceAlgorithmus(graph.nodeList[0], eulerTour, graph);
+            Node[] nodeArray = new Node[graph.nodeList.Count];
+            bruteforceAlgorithmus(graph.nodeList[0], nodeArray, graph);
             Console.WriteLine("min weight : " + Math.Round(minResult, 2));
         }
 
-        public void bruteforceAlgorithmus(Node startNode, Node[] eulerTour, Graph graph)
+        public void bruteforceAlgorithmus(Node startNode, Node[] nodeArray, Graph graph)
         {
  
             startNode.visited = true;
-
-            eulerTour[nodeIndex]=startNode;
+            nodeArray[nodeIndex]=startNode;
             nodeIndex++;
 
             for (int i = 0; i < startNode.nodeList.Count; i++) {
@@ -68,7 +67,7 @@ namespace namespaceAlgorithmus
                     Edge e= graph.findEdge(startNode,node);
                     result = result + e.weight;
 
-                    bruteforceAlgorithmus(node, eulerTour, graph);
+                    bruteforceAlgorithmus(node, nodeArray, graph);
 
                     result = result - e.weight;
   
@@ -80,7 +79,7 @@ namespace namespaceAlgorithmus
                 
                 double weight = 0;
 
-                Edge e = graph.findEdge(eulerTour[0], eulerTour[nodeIndex - 1]);
+                Edge e = graph.findEdge(nodeArray[0], nodeArray[nodeIndex - 1]);
 
                 weight = result + e.weight;
                 if (weight < minResult) {
@@ -96,19 +95,21 @@ namespace namespaceAlgorithmus
 
         public void branchUndBound(Graph graph)
         {
-            Node[] eulerTour = new Node[graph.nodeList.Count];
-            branchUndBoundAlgorithmus(graph.nodeList[0], eulerTour, graph);
+            Node[] nodeArray = new Node[graph.nodeList.Count];
+            branchUndBoundAlgorithmus(graph.nodeList[0], nodeArray, graph);
             Console.WriteLine("min weight : " + Math.Round(minResult, 2));
         }
 
-        public void branchUndBoundAlgorithmus(Node startNode, Node[] eulerTour, Graph graph)
+        public void branchUndBoundAlgorithmus(Node startNode, Node[] nodeArray, Graph graph)
         {
-            startNode.visited = true;
+            
             if (result > minResult)
             {
                 return;
             }
-            eulerTour[nodeIndex] = startNode;
+
+            startNode.visited = true;
+            nodeArray[nodeIndex] = startNode;
             nodeIndex++;
 
             for (int i = 0; i < startNode.nodeList.Count; i++)
@@ -119,7 +120,7 @@ namespace namespaceAlgorithmus
                     Edge e = graph.findEdge(startNode, node);
                     result = result + e.weight;
 
-                    branchUndBoundAlgorithmus(node, eulerTour, graph);
+                    branchUndBoundAlgorithmus(node, nodeArray, graph);
 
                     result = result - e.weight;
 
@@ -132,7 +133,7 @@ namespace namespaceAlgorithmus
 
                 double weight = 0;
 
-                Edge e = graph.findEdge(eulerTour[0], eulerTour[nodeIndex - 1]);
+                Edge e = graph.findEdge(nodeArray[0], nodeArray[nodeIndex - 1]);
 
                 weight = result + e.weight;
                 if (weight < minResult)
